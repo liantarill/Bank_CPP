@@ -19,7 +19,7 @@ void Welcome(){
 
 void Registration(){
     ofstream myFile;
-    string userReg, passReg;
+    string userReg, passReg, pinReg;
 
     system("cls");
     cout << "Create your new account!" << endl;
@@ -27,9 +27,15 @@ void Registration(){
     cin >> userReg;
     cout << "Enter password : ";
     cin >> passReg;
+    cout << "Enter PIN : ";
+    cin >> pinReg;
 
-    myFile.open("Users.txt", ios::app);
+    myFile.open("UserAccount.txt", ios::app);
     myFile << userReg << " " << passReg << endl;
+    myFile.close();
+
+    myFile.open("UserPIN.txt", ios::app);
+    myFile << userReg << " " << pinReg << endl;
     myFile.close();
 
     system("cls");
@@ -50,7 +56,7 @@ void Login(){
     cout << "password : ";
     cin >> passLog;
 
-    myFile.open("Users.txt");
+    myFile.open("UserAccount.txt");
     while(myFile >> userData >> passData){
         if(userData==userLog && passData==passLog){
             exist=true;
