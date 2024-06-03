@@ -11,17 +11,19 @@ void Menu()
 {
     int choice;
 
-    cout << "                                                                " << endl;
-    cout << "Y8b Y8b Y888P         888                                       " << endl;
-    cout << " Y8b Y8b Y8P   ,e e,  888  e88'888  e88 88e  888 888 8e   ,e e, " << endl;
-    cout << "  Y8b Y8b Y   d88 88b 888 d888  '8 d888 888b 888 888 88b d88 88b" << endl;
-    cout << "   Y8b Y8b    888   , 888 Y888   , Y888 888P 888 888 888 888   ," << endl;
-    cout << "    Y8P Y      'YeeP' 888  '88,e8'  '88 88'  888 888 888  'YeeP'" << endl;
-    cout << "                                                                " << endl;
-    cout << "                                                                " << endl;
-    cout << "                  Please enter the number you :                 " << endl;
-    cout << "                      1. Create accout                          " << endl;
-    cout << "                          2. Login                              " << endl;
+    cout << "                                                                                         " << endl;
+    cout << " oooooo   oooooo     oooo           oooo                                                 " << endl;
+    cout << "  `888.    `888.     .8'            `888                                                 " << endl;
+    cout << "   `888.   .8888.   .8'    .ooooo.   888   .ooooo.   .ooooo.  ooo. .oo.  .oo.    .ooooo. " << endl;
+    cout << "    `888  .8'`888. .8'    d88' `88b  888  d88' `'Y8 d88' `88b `888P'Y88bP'Y88b  d88' `88b" << endl;
+    cout << "     `888.8'  `888.8'     888ooo888  888  888       888   888  888   888   888  888ooo888" << endl;
+    cout << "      `888'    `888'      888    .o  888  888   .o8 888   888  888   888   888  888    .o" << endl;
+    cout << "       `8'      `8'       `Y8bod8P' o888o `Y8bod8P' `Y8bod8P' o888o o888o o888o `Y8bod8P'" << endl;
+    cout << "                                                                                         " << endl;
+    cout << "                                                                                         " << endl;
+    cout << "                              Please enter the number you :                              " << endl;
+    cout << "                                   1. Create accout                                      " << endl;
+    cout << "                                       2. Login                                          " << endl;
 
     cout << "Please enter your choice : ";
     cin >> choice;
@@ -106,12 +108,11 @@ void Login()
     if (exist == true)
     {
         system("cls");
-        cout << "Hello " << userLog << "!!!" << endl;
+        // cout << "Hello " << userLog << "!!!" << endl;
 
         myFile.open("Balance/" + userLog + ".txt");
         myFile >> balance;
-        cout << "Your balance is : " << balance << endl;
-
+        // cout << "Your balance is : " << balance << endl;
         MenuBank(userLog, balance);
     }
     else
@@ -123,4 +124,17 @@ void Login()
         cout << "---------------------------------------" << endl;
         Menu();
     }
+}
+
+void Quit()
+{
+    system("cls");
+    system("color 9");
+    cout << "ooooooooooooo oooo                              oooo             oooooo   oooo                      " << endl;
+    cout << "8'   888   `8 `888                              `888              `888.   .8'                       " << endl;
+    cout << "     888       888 .oo.    .oooo.   ooo. .oo.    888  oooo         `888. .8'    .ooooo.  oooo  oooo " << endl;
+    cout << "     888       888P`Y88b  `P  )88b  `888P`Y88b   888 .8P'           `888.8'    d88' `88b `888  `888 " << endl;
+    cout << "     888       888   888   .oP`888   888   888   888888.             `888'     888   888  888   888 " << endl;
+    cout << "     888       888   888  d8(  888   888   888   888 `88b.            888      888   888  888   888 " << endl;
+    cout << "    o888o     o888o o888o `Y888``8o o888o o888o o888o o888o          o888o     `Y8bod8P'  `V88V`V8P'" << endl;
 }

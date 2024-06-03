@@ -34,7 +34,9 @@ public:
         balances << bal << endl;
         balances.close();
 
-        cout << "Deposit successful. New balance: " << bal << endl;
+        system("cls");
+        cout << "Deposit successful" << endl;
+        MenuBank(username, bal);
     }
 
     void withdraw(const string &username, double amount)
@@ -52,7 +54,9 @@ public:
         balances << bal << endl;
         balances.close();
 
-        cout << "Withdraw successful. New balance: " << bal << endl;
+        system("cls");
+        cout << "Withdraw successful" << endl;
+        MenuBank(username, bal);
     }
 };
 
@@ -60,12 +64,17 @@ void MenuBank(string username, double balance)
 {
     Bank user;
     int choice;
+    bool input;
     char again;
     double amount;
 
+    cout << "Hello " << username << "!!!" << endl
+         << endl;
+    cout << "Your balance is : " << balance << endl;
     cout << "what do you want to do?" << endl;
     cout << "1. Deposit" << endl;
     cout << "2. Withdraw" << endl;
+    cout << "3. Quit" << endl;
     cout << "Enter your choice : ";
     cin >> choice;
 
@@ -73,13 +82,15 @@ void MenuBank(string username, double balance)
     {
     case 1:
         system("cls");
-        while (true)
+        input = true;
+        while (input)
         {
             cout << "Enter deposit amount : ";
             cin >> amount;
             if (amount > 0)
             {
                 user.deposit(username, amount);
+                !input;
                 break;
             }
             else
@@ -107,20 +118,21 @@ void MenuBank(string username, double balance)
                         cout << "wrong input" << endl;
                     }
                 }
-                break;
             }
         }
         break;
 
     case 2:
         system("cls");
-        while (true)
+        input = true;
+        while (input)
         {
             cout << "Enter withdraw amount : ";
             cin >> amount;
             if (amount > 0 && amount <= balance)
             {
                 user.withdraw(username, amount);
+                !input;
                 break;
             }
             else if (amount < 0)
@@ -177,6 +189,10 @@ void MenuBank(string username, double balance)
             }
             break;
         }
+        break;
+    case 3:
+        Quit();
+        exit(0);
         break;
     default:
         break;
