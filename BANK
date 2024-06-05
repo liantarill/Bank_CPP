@@ -1,0 +1,15 @@
+1. Create account & Login
+   -> Username(string)
+   -> Password(string)
+   -> PIN (string)
+
+2. Deposit
+   -> Tidak boleh minus
+   -> Harus input pin
+   -> Jika pin salah 3x terblokir
+
+3. Withdraw
+   -> Tidak boleh minus
+   -> Tidak boleh melebihi saldo
+   -> Harus input pin
+   -> Jika pin salah 3x terblokir

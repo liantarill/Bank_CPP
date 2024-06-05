@@ -5,7 +5,7 @@ using namespace std;
 void Menu();
 void Login();
 void Registration();
-void MenuBank(string, double);
+void MenuBank(string, string, double);
 
 void Menu()
 {
@@ -64,11 +64,11 @@ void Registration()
     myFile << userReg << " " << passReg << endl;
     myFile.close();
 
-    myFile.open("UserPIN.txt", ios::app);
-    myFile << userReg << " " << pinReg << endl;
+    myFile.open("Data/PIN/" + userReg + ".txt", ios::app);
+    myFile << pinReg << endl;
     myFile.close();
 
-    myFile.open("Balance/" + userReg + ".txt");
+    myFile.open("Data/Balance/" + userReg + ".txt");
     myFile << 0;
     myFile.close();
 
@@ -80,9 +80,10 @@ void Registration()
 
 void Login()
 {
-    ifstream myFile;
+    ifstream accFile, balFile, pinFile;
     string userLog, passLog;
     string userData, passData;
+    string pin;
     double balance;
 
     bool exist = false;
@@ -95,25 +96,33 @@ void Login()
     cout << "password : ";
     cin >> passLog;
 
-    myFile.open("UserAccount.txt");
-    while (myFile >> userData >> passData)
+    accFile.open("UserAccount.txt");
+    while (accFile >> userData >> passData)
     {
         if (userData == userLog && passData == passLog)
         {
             exist = true;
         }
     }
-    myFile.close();
+    accFile.close();
 
     if (exist == true)
     {
         system("cls");
-        // cout << "Hello " << userLog << "!!!" << endl;
+        balFile.open("Data/Balance/" + userLog + ".txt");
+        balFile >> balance;
+        balFile.close();
 
-        myFile.open("Balance/" + userLog + ".txt");
-        myFile >> balance;
-        // cout << "Your balance is : " << balance << endl;
-        MenuBank(userLog, balance);
+        pinFile.open("Data/PIN/" + userLog + ".txt");
+        pinFile >> pin;
+        if (pin == "BLOCKED")
+        {
+            cout << "YOUR ACCOUNT BLOCKED" << endl;
+            exit(0);
+        }
+        pinFile.close();
+
+        MenuBank(userLog, pin, balance);
     }
     else
     {
@@ -129,7 +138,6 @@ void Login()
 void Quit()
 {
     system("cls");
-    system("color 9");
     cout << "ooooooooooooo oooo                              oooo             oooooo   oooo                      " << endl;
     cout << "8'   888   `8 `888                              `888              `888.   .8'                       " << endl;
     cout << "     888       888 .oo.    .oooo.   ooo. .oo.    888  oooo         `888. .8'    .ooooo.  oooo  oooo " << endl;
