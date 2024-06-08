@@ -60,7 +60,7 @@ void Registration()
     cout << "Enter PIN : ";
     cin >> pinReg;
 
-    myFile.open("UserAccount.txt", ios::app);
+    myFile.open("Data/UserAccount.txt", ios::app);
     myFile << userReg << " " << passReg << endl;
     myFile.close();
 
@@ -96,7 +96,7 @@ void Login()
     cout << "password : ";
     cin >> passLog;
 
-    accFile.open("UserAccount.txt");
+    accFile.open("Data/UserAccount.txt");
     while (accFile >> userData >> passData)
     {
         if (userData == userLog && passData == passLog)
