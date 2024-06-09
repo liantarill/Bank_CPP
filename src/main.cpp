@@ -21,7 +21,6 @@ public:
     }
 
     usstype getUsername() { return this->username; }
-    // abc getPassword() { return this->password; }
     pintype getPin() { return this->pin; }
     baltype getBalance() { return this->balance; }
 
