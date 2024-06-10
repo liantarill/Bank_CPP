@@ -59,6 +59,27 @@ void Registration()
     cin >> passReg;
     cout << "Enter PIN : ";
     cin >> pinReg;
+    cout << "Enter PIN : ";
+
+    char ch;
+    ch = _getch();
+    while (ch != 13)
+    { 
+        if (ch == 8)
+        { 
+            if (pinReg.length() > 0)
+            {
+                cout << "\b \b"; 
+                pinReg.erase(pinReg.length() - 1);
+            }
+        }
+        else
+        {
+            pinReg.push_back(ch);
+            cout << '*';
+        }
+        ch = _getch();
+    }
 
     myFile.open("Data/UserAccount.txt", ios::app);
     myFile << userReg << " " << passReg << endl;
