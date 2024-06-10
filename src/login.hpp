@@ -46,6 +46,35 @@ void Menu()
     }
 }
 
+string getMaskedInput()
+{
+    string input;
+    char ch;
+    while (true)
+    {
+        ch = _getch();
+        if (ch == '\r')
+        {
+            break;
+        }
+        else if (ch == '\b')
+        {
+            if (!input.empty())
+            {
+                cout << "\b \b";
+                input.pop_back();
+            }
+        }
+        else
+        {
+            input.push_back(ch);
+            cout << '*';
+        }
+    }
+    cout << endl;
+    return input;
+}
+
 void Registration()
 {
     ofstream myFile;
@@ -56,9 +85,27 @@ void Registration()
     cout << "Enter username : ";
     cin >> userReg;
     cout << "Enter password : ";
-    cin >> passReg;
-    cout << "Enter PIN : ";
-    cin >> pinReg;
+    char ch;
+    ch = _getch();
+    while (ch != 13)
+    { 
+        if (ch == 8)
+        { 
+            if (passReg.length() > 0)
+            {
+                cout << "\b \b";
+                passReg.erase(passReg.length() - 1);
+            }
+        }
+        else
+        {
+            passReg.push_back(ch);
+            cout << '*';
+        }
+        ch = _getch();
+    }
+    cout << endl;
+    
     cout << "Enter PIN : ";
 
     char ch;
@@ -115,7 +162,26 @@ void Login()
     cout << "username : ";
     cin >> userLog;
     cout << "password : ";
-    cin >> passLog;
+    char ch;
+    ch = _getch();
+    while (ch != 13)
+    { 
+        if (ch == 8)
+        { 
+            if (passLog.length() > 0)
+            {
+                cout << "\b \b";
+                passLog.erase(passLog.length() - 1);
+            }
+        }
+        else
+        {
+            passLog.push_back(ch);
+            cout << '*';
+        }
+        ch = _getch();
+    }
+    cout << endl;
 
     accFile.open("Data/UserAccount.txt");
     while (accFile >> userData >> passData)
