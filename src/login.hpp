@@ -89,9 +89,9 @@ void Registration()
     char ch;
     ch = _getch();
     while (ch != 13)
-    { 
+    {
         if (ch == 8)
-        { 
+        {
             if (passReg.length() > 0)
             {
                 cout << "\b \b";
@@ -106,18 +106,17 @@ void Registration()
         ch = _getch();
     }
     cout << endl;
-    
+
     cout << "Enter PIN : ";
 
-    char ch;
     ch = _getch();
     while (ch != 13)
-    { 
+    {
         if (ch == 8)
-        { 
+        {
             if (pinReg.length() > 0)
             {
-                cout << "\b \b"; 
+                cout << "\b \b";
                 pinReg.erase(pinReg.length() - 1);
             }
         }
@@ -166,9 +165,9 @@ void Login()
     char ch;
     ch = _getch();
     while (ch != 13)
-    { 
+    {
         if (ch == 8)
-        { 
+        {
             if (passLog.length() > 0)
             {
                 cout << "\b \b";
