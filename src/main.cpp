@@ -18,6 +18,7 @@ public:
         this->username = username;
         this->pin = pin;
         this->balance = balance;
+        updatePin();
     }
 
     usstype getUsername() { return this->username; }
@@ -50,6 +51,15 @@ public:
         balances << this->balance << endl;
         balances.close();
     }
+
+    void updatePin()
+    {
+        ofstream pinFile;
+        pinFile.open("Data/PIN/" + this->username + ".txt");
+        pinFile << this->pin << endl;
+        pinFile.close();
+    }
+
 };
 
 void MenuBank(string username, string pin, double balance)
