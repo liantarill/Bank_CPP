@@ -29,7 +29,7 @@ public:
     void deposit(baltype amount)
     {
         this->balance += amount;
-        updateBalance();
+        updateBalance(this->username, this->balance);
 
         system("cls");
         cout << "Deposit successful" << endl;
@@ -39,17 +39,17 @@ public:
     void withdraw(baltype amount)
     {
         this->balance -= amount;
-        updateBalance();
+        updateBalance(this->username, this->balance);
         system("cls");
         cout << "Withdraw successful" << endl;
         MenuBank(this->username, this->pin, this->balance);
     }
 
-    void updateBalance()
+    void updateBalance(string username, double balance)
     {
         ofstream balances;
-        balances.open("Data/Balance/" + this->username + ".txt");
-        balances << this->balance << endl;
+        balances.open("Data/Balance/" + username + ".txt");
+        balances << balance << endl;
         balances.close();
     }
 
@@ -60,7 +60,6 @@ public:
         pinFile << this->pin << endl;
         pinFile.close();
     }
-
 };
 
 void MenuBank(string username, string pin, double balance)
@@ -148,7 +147,7 @@ void MenuBank(string username, string pin, double balance)
 
                     system("cls");
                     cout << "BLOCKED" << endl;
-                    break;
+                    exit(0);
                 }
 
                 cout << endl
@@ -249,7 +248,7 @@ void MenuBank(string username, string pin, double balance)
 
                     system("cls");
                     cout << "BLOCKED" << endl;
-                    break;
+                    exit(0);
                 }
 
                 cout << endl
