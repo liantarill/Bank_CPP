@@ -4,6 +4,11 @@
 #include <conio.h>
 using namespace std;
 
+void Menu();
+void Login();
+void Registration();
+void AdminMenu();
+
 struct Account
 {
     string name;
@@ -73,10 +78,6 @@ void printAccounts(const vector<Account> &accounts)
     }
 }
 
-void Menu();
-void Login();
-void Registration();
-
 void showUser()
 {
     system("cls");
@@ -103,21 +104,16 @@ void showUser()
 
     mergeSort(accounts, 0, accounts.size() - 1);
     printAccounts(accounts);
-    cout << "1. Show sorted list" << endl;
-    cout << "2. Exit" << endl;
-    cout << "Enter your choice : ";
+    cout << "Exit? (Y/N) : ";
     cin >> choice;
-    switch (choice)
+    if (choice == 'Y' || choice == 'y')
     {
-    case 1:
-
-        printAccounts(accounts);
-        break;
-    case 2:
-
-        break;
-    default:
-        break;
+        system("cls");
+        AdminMenu();
+    }
+    else
+    {
+        showUser();
     }
 }
 void searchUser(string search)
@@ -137,13 +133,18 @@ void searchUser(string search)
     }
     userFile.close();
 
+    char ext;
     int choice;
     int newpin;
     ofstream pinFile, myFile;
+    ifstream baFile;
+    double balance;
     if (exist == true)
     {
         cout << "1. Block user" << endl;
         cout << "2. Reset user's pin" << endl;
+        cout << "3. Show Balance" << endl;
+        cout << "4. Exit" << endl;
         cout << "Enter your choice : ";
         cin >> choice;
 
@@ -162,12 +163,35 @@ void searchUser(string search)
             myFile << newpin << endl;
             myFile.close();
         }
+        else if (choice == 3)
+        {
+
+            baFile.open("Data/Balance/" + search + ".txt");
+            baFile >> balance;
+            baFile.close();
+            while (true)
+            {
+                system("cls");
+                cout << "Balance : " << balance << endl;
+                cout << "Exit ? (Y/N) : ";
+                cin >> ext;
+                if (ext == 'Y' || ext == 'y')
+                {
+                    system("cls");
+                    AdminMenu();
+                }
+            }
+        }
+        {
+            system("cls");
+            AdminMenu();
+        }
     }
     else
     {
         system("cls");
-        cout << "Wrong user";
-        searchUser(search);
+        cout << "User doesn't exist" << endl;
+        AdminMenu();
     }
 }
 void Menu()
@@ -273,7 +297,7 @@ void Registration()
     myFile << userReg << endl;
     myFile.close();
 
-    myFile.open("Data/Admin/AdminAccount.txt", ios::app);
+    myFile.open("Data/Admin/AdminAcc.txt", ios::app);
     myFile << userReg << " " << passReg << endl;
     myFile.close();
 
@@ -320,7 +344,7 @@ void Login()
     }
     cout << endl;
 
-    accFile.open("Data/UserAccount.txt");
+    accFile.open("Data/Admin/AdminAcc.txt");
     while (accFile >> userData >> passData)
     {
         if (userData == userLog && passData == passLog)
@@ -356,10 +380,12 @@ void Quit()
     cout << "     888       888   888  d8(  888   888   888   888 `88b.            888      888   888  888   888 " << endl;
     cout << "    o888o     o888o o888o `Y888``8o o888o o888o o888o o888o          o888o     `Y8bod8P'  `V88V`V8P'" << endl;
 }
-
-int main()
+void AdminMenu()
 {
+
     int choice;
+    cout << "Hey there !!" << endl
+         << endl;
     cout << "1. Show user list" << endl;
     cout << "2. Search user" << endl;
     cout << "3. Exit" << endl;
@@ -380,6 +406,13 @@ int main()
         searchUser(search);
         break;
     default:
+        Quit();
+        exit(0);
         break;
     }
+}
+int main()
+{
+    Menu();
+    AdminMenu();
 }
