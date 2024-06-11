@@ -11,498 +11,526 @@ template <class usstype, class pintype, class baltype>
 class Bank
 {
 private:
-    usstype username;
-    pintype pin;
-    baltype balance;
+        usstype username;
+        pintype pin;
+        baltype balance;
 
 public:
-    void showReceipt(string to, double amount)
-    {
-        system("cls");
-        cout << "|----------------------|" << endl;
-        cout << "|Transaction Successful|" << endl;
-        cout << "|----------------------|" << endl;
-        cout << endl;
-
-        if (to == "Deposit")
-        {
-            cout << "----------------------\n";
-            cout << "\t\033[1;31mReceipt\033[0m\n";
-            cout << "----------------------\n";
-            cout << "Deposit:     " << amount << endl;
-        }
-        else if (to == "Withdraw")
-        {
-            cout << "----------------------\n";
-            cout << "\t\033[1;31mReceipt\033[0m\n";
-            cout << "----------------------\n";
-            cout << "Withdraw:    " << amount << endl;
-        }
-        else
-        {
-            cout << "----------------------\n";
-            cout << "\t\033[1;31mReceipt\033[0m\n";
-            cout << "----------------------\n";
-            cout << "Transfer to: " << to << "    " << amount << endl;
-        }
-
-        string choice;
-
-        cout << "\n\n\nExit? (Y/N) : ";
-        cin >> choice;
-        if (choice == "Y" || choice == "y")
+        void showReceipt(string to, double amount)
         {
             system("cls");
+            cout << "|----------------------|" << endl;
+            cout << "|Transaction Successful|" << endl;
+            cout << "|----------------------|" << endl;
+            cout << endl;
+    
+            if (to == "Deposit")
+            {
+                cout << "----------------------\n";
+                cout << "\t\033[1;31mReceipt\033[0m\n";
+                cout << "----------------------\n";
+                cout << "Deposit:     " << amount << endl;
+            }
+            else if (to == "Withdraw")
+            {
+                cout << "----------------------\n";
+                cout << "\t\033[1;31mReceipt\033[0m\n";
+                cout << "----------------------\n";
+                cout << "Withdraw:    " << amount << endl;
+            }
+            else
+            {
+                cout << "----------------------\n";
+                cout << "\t\033[1;31mReceipt\033[0m\n";
+                cout << "----------------------\n";
+                cout << "Transfer to: " << to << "    " << amount << endl;
+            }
+    
+            string choice;
+    
+            cout << "\n\n\nExit? (Y/N) : ";
+            cin >> choice;
+            if (choice == "Y" || choice == "y")
+            {
+                system("cls");
+            }
+            else
+            {
+                showReceipt(to, amount);
+            }
         }
-        else
+    
+        Bank(usstype username, pintype pin, baltype balance)
         {
-            showReceipt(to, amount);
+            this->username = username;
+            this->pin = pin;
+            this->balance = balance;
+            updatePin();
         }
-    }
-
-    Bank(usstype username, pintype pin, baltype balance)
-    {
-        this->username = username;
-        this->pin = pin;
-        this->balance = balance;
-        updatePin();
-    }
-
-    usstype getUsername() { return this->username; }
-    pintype getPin() { return this->pin; }
-    baltype getBalance() { return this->balance; }
-
-    void deposit(baltype amount)
-    {
-        this->balance += amount;
-        updateBalance(this->username, this->balance);
-
-        system("cls");
-        cout << "Deposit successful" << endl;
-    }
-
-    void withdraw(baltype amount)
-    {
-        this->balance -= amount;
-        updateBalance(this->username, this->balance);
-        system("cls");
-        cout << "Withdraw successful" << endl;
-    }
-
-    void updateBalance(string username, double balance)
-    {
-        ofstream balances;
-        balances.open("Data/Balance/" + username + ".txt");
-        balances << fixed << setprecision(0) << balance << endl;
-        balances.close();
-    }
-
-    void updatePin()
-    {
-        ofstream pinFile;
-        pinFile.open("Data/PIN/" + this->username + ".txt");
-        pinFile << this->pin << endl;
-        pinFile.close();
-    }
-
-    void transfer(string user, double amount)
-    {
-        ifstream balances;
-        double nowbalance;
-        balances.open("Data/Balance/" + user + ".txt");
-        balances >> nowbalance;
-        balances.close();
-
-        nowbalance += amount;
-        updateBalance(user, nowbalance);
-
-        balances.open("Data/Balance/" + this->getUsername() + ".txt");
-        balances >> nowbalance;
-        balances.close();
-        this->balance -= amount;
-        updateBalance(this->username, this->balance);
-        system("cls");
-        cout << "Transfer Successed" << endl;
-    }
-
-    void updateTransaction(double amount, string to)
-    {
-        ofstream transFile;
-        transFile.open("Data/Transaction/" + this->username + ".txt", ios::app);
-        if (to == "Deposit")
+    
+        usstype getUsername() { return this->username; }
+        pintype getPin() { return this->pin; }
+        baltype getBalance() { return this->balance; }
+    
+        void deposit(baltype amount)
         {
-            transFile << to << "          +" << fixed << setprecision(0) << amount << endl;
-            transFile.close();
+            this->balance += amount;
+            updateBalance(this->username, this->balance);
+    
+            system("cls");
+            cout << "Deposit successful" << endl;
         }
-        else if (to == "Withdraw")
+    
+        void withdraw(baltype amount)
         {
-            transFile << to << "         -" << fixed << setprecision(0) << amount << endl;
-            transFile.close();
+            this->balance -= amount;
+            updateBalance(this->username, this->balance);
+            system("cls");
+            cout << "Withdraw successful" << endl;
         }
-        else
+    
+        void updateBalance(string username, double balance)
         {
-            transFile << "Transfer to " << to << "      -" << fixed << setprecision(0) << amount << endl;
-            transFile.close();
-
-            transFile.open("Data/Transaction/" + to + ".txt", ios::app);
-            transFile << "Transfer from " << this->username << "      +" << fixed << setprecision(0) << amount << endl;
-            transFile.close();
+            ofstream balances;
+            balances.open("Data/Balance/" + username + ".txt");
+            balances << fixed << setprecision(0) << balance << endl;
+            balances.close();
         }
-    }
-
-    void displayTransaction()
-    {
-        system("cls");
-        ifstream transFile;
-        stack<string> list;
-        string history;
-
-        transFile.open("Data/Transaction/" + this->username + ".txt");
-        while (getline(transFile, history))
+    
+        void updatePin()
         {
-            list.push(history);
+            ofstream pinFile;
+            pinFile.open("Data/PIN/" + this->username + ".txt");
+            pinFile << this->pin << endl;
+            pinFile.close();
         }
-
-        transFile.close();
-        if (list.empty())
+    
+        void transfer(string user, double amount)
         {
-            cout << "You have't made a transaction yet" << endl;
+            ifstream balances;
+            double nowbalance;
+            balances.open("Data/Balance/" + user + ".txt");
+            balances >> nowbalance;
+            balances.close();
+    
+            nowbalance += amount;
+            updateBalance(user, nowbalance);
+    
+            balances.open("Data/Balance/" + this->getUsername() + ".txt");
+            balances >> nowbalance;
+            balances.close();
+            this->balance -= amount;
+            updateBalance(this->username, this->balance);
+            system("cls");
+            cout << "Transfer Successed" << endl;
         }
-        while (!list.empty())
+    
+        void updateTransaction(double amount, string to)
         {
-            cout << list.top() << endl;
-            list.pop();
+            ofstream transFile;
+            transFile.open("Data/Transaction/" + this->username + ".txt", ios::app);
+            if (to == "Deposit")
+            {
+                transFile << to << "          +" << fixed << setprecision(0) << amount << endl;
+                transFile.close();
+            }
+            else if (to == "Withdraw")
+            {
+                transFile << to << "         -" << fixed << setprecision(0) << amount << endl;
+                transFile.close();
+            }
+            else
+            {
+                transFile << "Transfer to " << to << "      -" << fixed << setprecision(0) << amount << endl;
+                transFile.close();
+    
+                transFile.open("Data/Transaction/" + to + ".txt", ios::app);
+                transFile << "Transfer from " << this->username << "      +" << fixed << setprecision(0) << amount << endl;
+                transFile.close();
+            }
         }
-        char choice;
-        cout << "_____________________" << endl;
-        cout << "Do you want to exit ?(Y/N): ";
-
-        cin >> choice;
-        if (choice == 'Y' || choice == 'y')
+    
+        void displayTransaction()
         {
             system("cls");
-            MenuBank(this->username, this->pin, this->balance);
+            ifstream transFile;
+            stack<string> list;
+            string history;
+    
+            transFile.open("Data/Transaction/" + this->username + ".txt");
+            while (getline(transFile, history))
+            {
+                list.push(history);
+            }
+    
+            transFile.close();
+            if (list.empty())
+            {
+                cout << "You have't made a transaction yet" << endl;
+            }
+            while (!list.empty())
+            {
+                cout << list.top() << endl;
+                list.pop();
+            }
+            char choice;
+            cout << "_____________________" << endl;
+            cout << "Do you want to exit ?(Y/N): ";
+    
+            cin >> choice;
+            if (choice == 'Y' || choice == 'y')
+            {
+                system("cls");
+                MenuBank(this->username, this->pin, this->balance);
+            }
+            else
+            {
+                displayTransaction();
+            }
         }
-        else
-        {
-            displayTransaction();
-        }
-    }
-};
-
-void MenuBank(string username, string pin, double balance)
-{
-    Bank<string, string, double> *user = new Bank<string, string, double>(username, pin, balance);
-    int choice;
-    int inpin;
-    char again;
-
-    double amount;
-    string inputPin;
-    bool exist;
-    string transfername;
-    vector<string> usernames;
-    ifstream balFile;
-    string users;
-    cout << "Hello " << user->getUsername() << "!!!" << endl
-         << endl;
-    cout << "Your balance is : " << fixed << setprecision(0) << user->getBalance() << endl;
-    cout << "what do you want to do?" << endl;
-    cout << "1. Deposit" << endl;
-    cout << "2. Withdraw" << endl;
-    cout << "3. Transfer" << endl;
-    cout << "4. Transaction History" << endl;
-    cout << "5. Quit" << endl;
-    cout << "Enter your choice : ";
-    cin >> choice;
-
-    switch (choice)
+    };
+    
+    void MenuBank(string username, string pin, double balance)
     {
-    case 1:
-        system("cls");
-        while (true)
+        Bank<string, string, double> *user = new Bank<string, string, double>(username, pin, balance);
+        int choice;
+        int inpin;
+        char again;
+    
+        double amount;
+        string inputPin;
+        bool exist;
+        string transfername;
+        vector<string> usernames;
+        ifstream balFile;
+        string users;
+        cout << "Hello " << user->getUsername() << "!!!" << endl
+             << endl;
+        cout << "Your balance is : " << fixed << setprecision(0) << user->getBalance() << endl;
+        cout << "what do you want to do?" << endl;
+        cout << "1. Deposit" << endl;
+        cout << "2. Withdraw" << endl;
+        cout << "3. Transfer" << endl;
+        cout << "4. Transaction History" << endl;
+        cout << "5. Quit" << endl;
+        cout << "Enter your choice : ";
+        cin >> choice;
+    
+        switch (choice)
         {
-            cout << "Enter deposit amount : ";
-            cin >> amount;
-            if (amount < 0)
+        case 1:
+            system("cls");
+            while (true)
             {
-                cout << "error,amount can't be minus" << endl;
-                while (true)
+                cout << "Enter deposit amount : ";
+                cin >> amount;
+                if (amount < 0)
                 {
-                    cout << "Do you wan't to try again ? (Y/N)";
-                    cin >> again;
-
-                    if (again == 'N' || again == 'n')
-                    {
-                        system("cls");
-                        MenuBank(username, pin, balance);
-                        break;
-                    }
-                    else if (again == 'Y' || again == 'y')
-                    {
-                        system("cls");
-                        break;
-                    }
-                    else
-                    {
-                        system("cls");
-                        cout << "wrong input" << endl;
-                    }
-                }
-            }
-            else if (!(int)amount)
-            {
-                cout << "Error!!" << endl;
-                exit(0);
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        inpin = 1;
-        while (true)
-        {
-            cout << "Enter your PIN : ";
-            inputPin = getMaskedInput();
-            if (inputPin == pin)
-            {
-                user->deposit(amount);
-                user->updateTransaction(amount, "Deposit");
-                user->showReceipt("Deposit", amount);
-                MenuBank(user->getUsername(), user->getPin(), user->getBalance());
-                break;
-            }
-            else
-            {
-                if (inpin == 3)
-                {
-                    ofstream pinFile;
-                    pinFile.open("Data/PIN/" + user->getUsername() + ".txt");
-                    pinFile << "BLOCKED" << endl;
-                    pinFile.close();
-
-                    system("cls");
-                    cout << "BLOCKED" << endl;
-                    exit(0);
-                }
-
-                cout << endl
-                     << "Please check again your PIN" << endl;
-                inpin++;
-            }
-        }
-
-        break;
-
-    case 2:
-        system("cls");
-        while (true)
-        {
-            cout << "Enter withdraw amount : ";
-            cin >> amount;
-            if (amount < 0)
-            {
-                cout << "error,amount can't be minus" << endl;
-                while (true)
-                {
-                    cout << "Do you wan't to try again ? (Y/N)";
-                    cin >> again;
-
-                    if (again == 'N' || again == 'n')
-                    {
-                        system("cls");
-                        MenuBank(username, pin, balance);
-                        break;
-                    }
-                    else if (again == 'Y' || again == 'y')
-                    {
-                        system("cls");
-                        break;
-                    }
-                    else
-                    {
-                        system("cls");
-                        cout << "wrong input" << endl;
-                    }
-                }
-            }
-            else if (amount > user->getBalance())
-            {
-                cout << "Error, balance not enough" << endl;
-                while (true)
-                {
-                    cout << "Do you wan't to try again ? (Y/N)";
-                    cin >> again;
-
-                    if (again == 'N' || again == 'n')
-                    {
-                        system("cls");
-                        MenuBank(username, pin, balance);
-                        break;
-                    }
-                    else if (again == 'Y' || again == 'y')
-                    {
-                        system("cls");
-                        break;
-                    }
-                    else
-                    {
-                        system("cls");
-                        cout << "wrong input" << endl;
-                    }
-                }
-            }
-            else if (!(int)amount)
-            {
-                cout << "Error!!" << endl;
-                exit(0);
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        inpin = 1;
-        while (true)
-        {
-            cout << "Enter your PIN : ";
-            inputPin = getMaskedInput();
-            if (inputPin == pin)
-            {
-                user->withdraw(amount);
-                user->updateTransaction(amount, "Withdraw");
-                user->showReceipt("Withdraw", amount);
-                MenuBank(user->getUsername(), user->getPin(), user->getBalance());
-                break;
-            }
-            else
-            {
-                if (inpin == 3)
-                {
-                    ofstream pinFile;
-                    pinFile.open("Data/PIN/" + user->getUsername() + ".txt");
-                    pinFile << "BLOCKED" << endl;
-                    pinFile.close();
-
-                    system("cls");
-                    cout << "BLOCKED" << endl;
-                    exit(0);
-                }
-
-                cout << endl
-                     << "Please check again your PIN" << endl;
-                inpin++;
-            }
-        }
-        break;
-    case 3:
-        system("cls");
-        while (true)
-        {
-            cout << "Username : ";
-            cin >> transfername;
-            if (transfername != user->getUsername())
-            {
-                // mengubah listuser menjadi vector
-                balFile.open("Data/ListUsers.txt");
-                while (balFile >> users)
-                {
-                    usernames.push_back(users);
-                }
-                balFile.close();
-
-                // check username dalam vector
-                exist = false;
-                for (auto name : usernames)
-                {
-                    if (transfername == name)
-                        exist = true;
-                }
-
-                // jika ada input nilai  transfer
-                if (exist == true)
-                {
-                    while (true)
-                    {
-                        cout << "Transfer amount : ";
-                        cin >> amount;
-                        if (amount < 0)
-                        {
-                            cout << "error,amount can't be minus" << endl;
-                            while (true)
-                            {
-                                cout << "Do you wan't to try again ? (Y/N)";
-                                cin >> again;
-
-                                if (again == 'N' || again == 'n')
-                                {
-                                    system("cls");
-                                    MenuBank(username, pin, balance);
-                                    break;
-                                }
-                                else if (again == 'Y' || again == 'y')
-                                {
-                                    system("cls");
-                                    break;
-                                }
-                                else
-                                {
-                                    system("cls");
-                                    cout << "wrong input" << endl;
-                                }
-                            }
-                        }
-                        else if (amount > user->getBalance())
-                        {
-                            cout << "Error, balance not enough" << endl;
-                            while (true)
-                            {
-                                cout << "Do you wan't to try again ? (Y/N)";
-                                cin >> again;
-
-                                if (again == 'N' || again == 'n')
-                                {
-                                    system("cls");
-                                    MenuBank(username, pin, balance);
-                                    break;
-                                }
-                                else if (again == 'Y' || again == 'y')
-                                {
-                                    system("cls");
-                                    break;
-                                }
-                                else
-                                {
-                                    system("cls");
-                                    cout << "wrong input" << endl;
-                                }
-                            }
-                        }
-                        else if (!(int)amount)
-                        {
-                            cout << "Error!!" << endl;
-                            exit(0);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    break;
-                }
-                else
-                {
-                    system("cls");
-                    cout << "User doesn't exist." << endl;
-
+                    cout << "error,amount can't be minus" << endl;
                     while (true)
                     {
                         cout << "Do you wan't to try again ? (Y/N)";
                         cin >> again;
+    
+                        if (again == 'N' || again == 'n')
+                        {
+                            system("cls");
+                            MenuBank(username, pin, balance);
+                            break;
+                        }
+                        else if (again == 'Y' || again == 'y')
+                        {
+                            system("cls");
+                            break;
+                        }
+                        else
+                        {
+                            system("cls");
+                            cout << "wrong input" << endl;
+                        }
+                    }
+                }
+                else if (!(int)amount)
+                {
+                    cout << "Error!!" << endl;
+                    exit(0);
+                }
+                else
+                {
+                    break;
+                }
+            }
+    
+            inpin = 1;
+            while (true)
+            {
+                cout << "Enter your PIN : ";
+                inputPin = getMaskedInput();
+                if (inputPin == pin)
+                {
+                    user->deposit(amount);
+                    user->updateTransaction(amount, "Deposit");
+                    user->showReceipt("Deposit", amount);
+                    MenuBank(user->getUsername(), user->getPin(), user->getBalance());
+                    break;
+                }
+                else
+                {
+                    if (inpin == 3)
+                    {
+                        ofstream pinFile;
+                        pinFile.open("Data/PIN/" + user->getUsername() + ".txt");
+                        pinFile << "BLOCKED" << endl;
+                        pinFile.close();
+    
+                        system("cls");
+                        cout << "BLOCKED" << endl;
+                        exit(0);
+                    }
+    
+                    cout << endl
+                         << "Please check again your PIN" << endl;
+                    inpin++;
+                }
+            }
 
+            break;
+    
+        case 2:
+            system("cls");
+            while (true)
+            {
+                cout << "Enter withdraw amount : ";
+                cin >> amount;
+                if (amount < 0)
+                {
+                    cout << "error,amount can't be minus" << endl;
+                    while (true)
+                    {
+                        cout << "Do you wan't to try again ? (Y/N)";
+                        cin >> again;
+    
+                        if (again == 'N' || again == 'n')
+                        {
+                            system("cls");
+                            MenuBank(username, pin, balance);
+                            break;
+                        }
+                        else if (again == 'Y' || again == 'y')
+                        {
+                            system("cls");
+                            break;
+                        }
+                        else
+                        {
+                            system("cls");
+                            cout << "wrong input" << endl;
+                        }
+                    }
+                }
+                else if (amount > user->getBalance())
+                {
+                    cout << "Error, balance not enough" << endl;
+                    while (true)
+                    {
+                        cout << "Do you wan't to try again ? (Y/N)";
+                        cin >> again;
+    
+                        if (again == 'N' || again == 'n')
+                        {
+                            system("cls");
+                            MenuBank(username, pin, balance);
+                            break;
+                        }
+                        else if (again == 'Y' || again == 'y')
+                        {
+                            system("cls");
+                            break;
+                        }
+                        else
+                        {
+                            system("cls");
+                            cout << "wrong input" << endl;
+                        }
+                    }
+                }
+                else if (!(int)amount)
+                {
+                    cout << "Error!!" << endl;
+                    exit(0);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            inpin = 1;
+            while (true)
+            {
+                cout << "Enter your PIN : ";
+                inputPin = getMaskedInput();
+                if (inputPin == pin)
+                {
+                    user->withdraw(amount);
+                    user->updateTransaction(amount, "Withdraw");
+                    user->showReceipt("Withdraw", amount);
+                    MenuBank(user->getUsername(), user->getPin(), user->getBalance());
+                    break;
+                }
+                else
+                {
+                    if (inpin == 3)
+                    {
+                        ofstream pinFile;
+                        pinFile.open("Data/PIN/" + user->getUsername() + ".txt");
+                        pinFile << "BLOCKED" << endl;
+                        pinFile.close();
+    
+                        system("cls");
+                        cout << "BLOCKED" << endl;
+                        exit(0);
+                    }
+    
+                    cout << endl
+                         << "Please check again your PIN" << endl;
+                    inpin++;
+                }
+            }
+            break;
+        case 3:
+            system("cls");
+            while (true)
+            {
+                cout << "Username : ";
+                cin >> transfername;
+                if (transfername != user->getUsername())
+                {
+                    // mengubah listuser menjadi vector
+                    balFile.open("Data/ListUsers.txt");
+                    while (balFile >> users)
+                    {
+                        usernames.push_back(users);
+                    }
+                    balFile.close();
+    
+                    // check username dalam vector
+                    exist = false;
+                    for (auto name : usernames)
+                    {
+                        if (transfername == name)
+                            exist = true;
+                    }
+
+                    // jika ada input nilai  transfer
+                    if (exist == true)
+                    {
+                        while (true)
+                        {
+                            cout << "Transfer amount : ";
+                            cin >> amount;
+                            if (amount < 0)
+                            {
+                                cout << "error,amount can't be minus" << endl;
+                                while (true)
+                                {
+                                    cout << "Do you wan't to try again ? (Y/N)";
+                                    cin >> again;
+    
+                                    if (again == 'N' || again == 'n')
+                                    {
+                                        system("cls");
+                                        MenuBank(username, pin, balance);
+                                        break;
+                                    }
+                                    else if (again == 'Y' || again == 'y')
+                                    {
+                                        system("cls");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        system("cls");
+                                        cout << "wrong input" << endl;
+                                    }
+                                }
+                            }
+                            else if (amount > user->getBalance())
+                            {
+                                cout << "Error, balance not enough" << endl;
+                                while (true)
+                                {
+                                    cout << "Do you wan't to try again ? (Y/N)";
+                                    cin >> again;
+    
+                                    if (again == 'N' || again == 'n')
+                                    {
+                                        system("cls");
+                                        MenuBank(username, pin, balance);
+                                        break;
+                                    }
+                                    else if (again == 'Y' || again == 'y')
+                                    {
+                                        system("cls");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        system("cls");
+                                        cout << "wrong input" << endl;
+                                    }
+                                }
+                            }
+                            else if (!(int)amount)
+                            {
+                                cout << "Error!!" << endl;
+                                exit(0);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        system("cls");
+                        cout << "User doesn't exist." << endl;
+    
+                        while (true)
+                        {
+                            cout << "Do you wan't to try again ? (Y/N)";
+                            cin >> again;
+
+                            if (again == 'N' || again == 'n')
+                            {
+                                system("cls");
+                                MenuBank(username, pin, balance);
+                                break;
+                            }
+                            else if (again == 'Y' || again == 'y')
+                            {
+                                system("cls");
+                                break;
+                            }
+                            else
+                            {
+                                system("cls");
+                                cout << "wrong input" << endl;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    system("cls");
+                    cout << "Can't transfer to your own account" << endl;
+                    while (true)
+                    {
+                        cout << "Do you wan't to try again ? (Y/N)";
+                        cin >> again;
+    
                         if (again == 'N' || again == 'n')
                         {
                             system("cls");
@@ -522,81 +550,54 @@ void MenuBank(string username, string pin, double balance)
                     }
                 }
             }
-            else
-            {
-                system("cls");
-                cout << "Can't transfer to your own account" << endl;
-                while (true)
-                {
-                    cout << "Do you wan't to try again ? (Y/N)";
-                    cin >> again;
 
-                    if (again == 'N' || again == 'n')
+            inpin = 1;
+            while (true)
+            {
+                cout << "Enter your PIN : ";
+                inputPin = getMaskedInput();
+                if (inputPin == pin)
+                {
+                    user->transfer(transfername, amount);
+                    user->updateTransaction(amount, transfername);
+                    user->showReceipt(transfername, amount);
+                    MenuBank(user->getUsername(), user->getPin(), user->getBalance());
+    
+                    break;
+                }
+                else
+                {
+                    if (inpin == 3)
                     {
+                        ofstream pinFile;
+                        pinFile.open("Data/PIN/" + user->getUsername() + ".txt");
+                        pinFile << "BLOCKED" << endl;
+                        pinFile.close();
+    
                         system("cls");
-                        MenuBank(username, pin, balance);
-                        break;
+                        cout << "BLOCKED" << endl;
+                        exit(0);
                     }
-                    else if (again == 'Y' || again == 'y')
-                    {
-                        system("cls");
-                        break;
-                    }
-                    else
-                    {
-                        system("cls");
-                        cout << "wrong input" << endl;
-                    }
+    
+                    cout << endl
+                         << "Please check again your PIN" << endl;
+                    inpin++;
                 }
             }
+            break;
+
+        case 4:
+            user->displayTransaction();
+            break;
+        case 5:
+            Quit();
+            exit(0);
+            break;
+        default:
+            break;
         }
-
-        inpin = 1;
-        while (true)
-        {
-            cout << "Enter your PIN : ";
-            inputPin = getMaskedInput();
-            if (inputPin == pin)
-            {
-                user->transfer(transfername, amount);
-                user->updateTransaction(amount, transfername);
-                user->showReceipt(transfername, amount);
-                MenuBank(user->getUsername(), user->getPin(), user->getBalance());
-
-                break;
-            }
-            else
-            {
-                if (inpin == 3)
-                {
-                    ofstream pinFile;
-                    pinFile.open("Data/PIN/" + user->getUsername() + ".txt");
-                    pinFile << "BLOCKED" << endl;
-                    pinFile.close();
-
-                    system("cls");
-                    cout << "BLOCKED" << endl;
-                    exit(0);
-                }
-
-                cout << endl
-                     << "Please check again your PIN" << endl;
-                inpin++;
-            }
-        }
-        break;
-
-    case 4:
-        user->displayTransaction();
-        break;
-    case 5:
-        Quit();
-        exit(0);
-        break;
-    default:
-        break;
     }
-}
+};
 
 int main()
 {
