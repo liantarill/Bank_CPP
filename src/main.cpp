@@ -93,7 +93,7 @@ public:
     {
         ofstream balances;
         balances.open("Data/Balance/" + username + ".txt");
-        balances << balance << endl;
+        balances << fixed << setprecision(0) << balance << endl;
         balances.close();
     }
 
@@ -131,21 +131,21 @@ public:
         transFile.open("Data/Transaction/" + this->username + ".txt", ios::app);
         if (to == "Deposit")
         {
-            transFile << to << "          +" << amount << endl;
+            transFile << to << "          +" << fixed << setprecision(0) << amount << endl;
             transFile.close();
         }
         else if (to == "Withdraw")
         {
-            transFile << to << "         -" << amount << endl;
+            transFile << to << "         -" << fixed << setprecision(0) << amount << endl;
             transFile.close();
         }
         else
         {
-            transFile << "Transfer to " << to << "      -" << amount << endl;
+            transFile << "Transfer to " << to << "      -" << fixed << setprecision(0) << amount << endl;
             transFile.close();
 
             transFile.open("Data/Transaction/" + to + ".txt", ios::app);
-            transFile << "Transfer from " << this->username << "      +" << amount << endl;
+            transFile << "Transfer from " << this->username << "      +" << fixed << setprecision(0) << amount << endl;
             transFile.close();
         }
     }
