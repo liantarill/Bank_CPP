@@ -258,6 +258,187 @@ void MenuBank(string username, string pin, double balance)
         }
         break;
     case 3:
+        system("cls");
+        while (true)
+        {
+            cout << "Username : ";
+            cin >> transfername;
+            if (transfername != user->getUsername())
+            {
+                // mengubah listuser menjadi vector
+                balFile.open("Data/ListUser.txt");
+                while (balFile >> users)
+                {
+                    usernames.push_back(users);
+                }
+                balFile.close();
+
+                // check username dalam vector
+                exist = false;
+                for (auto name : usernames)
+                {
+                    if (transfername == name)
+                        exist = true;
+                }
+
+                // jika ada input nilai  transfer
+                if (exist == true)
+                {
+                    while (true)
+                    {
+                        cout << "Transfer amount : ";
+                        cin >> amount;
+                        if (amount < 0)
+                        {
+                            cout << "error,amount can't be minus" << endl;
+                            while (true)
+                            {
+                                cout << "Do you wan't to try again ? (Y/N)";
+                                cin >> again;
+
+                                if (again == 'N' || again == 'n')
+                                {
+                                    system("cls");
+                                    MenuBank(username, pin, balance);
+                                    break;
+                                }
+                                else if (again == 'Y' || again == 'y')
+                                {
+                                    system("cls");
+                                    break;
+                                }
+                                else
+                                {
+                                    system("cls");
+                                    cout << "wrong input" << endl;
+                                }
+                            }
+                        }
+                        else if (amount > user->getBalance())
+                        {
+                            cout << "Error, balance not enough" << endl;
+                            while (true)
+                            {
+                                cout << "Do you wan't to try again ? (Y/N)";
+                                cin >> again;
+
+                                if (again == 'N' || again == 'n')
+                                {
+                                    system("cls");
+                                    MenuBank(username, pin, balance);
+                                    break;
+                                }
+                                else if (again == 'Y' || again == 'y')
+                                {
+                                    system("cls");
+                                    break;
+                                }
+                                else
+                                {
+                                    system("cls");
+                                    cout << "wrong input" << endl;
+                                }
+                            }
+                        }
+                        else if (!(int)amount)
+                        {
+                            cout << "Error!!" << endl;
+                            exit(0);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    break;
+                }
+                else
+                {
+                    system("cls");
+                    cout << "User doesn't exist." << endl;
+
+                    while (true)
+                    {
+                        cout << "Do you wan't to try again ? (Y/N)";
+                        cin >> again;
+
+                        if (again == 'N' || again == 'n')
+                        {
+                            system("cls");
+                            MenuBank(username, pin, balance);
+                            break;
+                        }
+                        else if (again == 'Y' || again == 'y')
+                        {
+                            system("cls");
+                            break;
+                        }
+                        else
+                        {
+                            system("cls");
+                            cout << "wrong input" << endl;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                system("cls");
+                cout << "Can't transfer to your own account" << endl;
+                while (true)
+                {
+                    cout << "Do you wan't to try again ? (Y/N)";
+                    cin >> again;
+
+                    if (again == 'N' || again == 'n')
+                    {
+                        system("cls");
+                        MenuBank(username, pin, balance);
+                        break;
+                    }
+                    else if (again == 'Y' || again == 'y')
+                    {
+                        system("cls");
+                        break;
+                    }
+                    else
+                    {
+                        system("cls");
+                        cout << "wrong input" << endl;
+                    }
+                }
+            }
+        }
+
+        inpin = 1;
+        while (true)
+        {
+            cout << "Enter your PIN : ";
+            cin >> inputPin;
+            if (inputPin == pin)
+            {
+                user->transfer(transfername, amount);
+                break;
+            }
+            else
+            {
+                if (inpin == 3)
+                {
+                    ofstream pinFile;
+                    pinFile.open("Data/PIN/" + user->getUsername() + ".txt");
+                    pinFile << "BLOCKED" << endl;
+                    pinFile.close();
+
+                    system("cls");
+                    cout << "BLOCKED" << endl;
+                    exit(0);
+                }
+
+                cout << endl
+                     << "Please check again your PIN" << endl;
+                inpin++;
+            }
+        }
         Quit();
         exit(0);
         break;
