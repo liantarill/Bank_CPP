@@ -16,6 +16,37 @@ private:
     baltype balance;
 
 public:
+     void showReceipt(string to, double amount)
+        {
+            system("cls");
+            cout << "|----------------------|" << endl;
+            cout << "|Transaction Successful|" << endl;
+            cout << "|----------------------|" << endl;
+            cout << endl;
+
+            if (to == "Deposit")
+            {
+                cout << "----------------------\n";
+                cout << "\t\033[1;31mReceipt\033[0m\n";
+                cout << "----------------------\n";
+                cout << "Deposit:     " << amount << endl;
+            }
+            else if (to == "Withdraw")
+            {
+                cout << "----------------------\n";
+                cout << "\t\033[1;31mReceipt\033[0m\n";
+                cout << "----------------------\n";
+                cout << "Withdraw:    " << amount << endl;
+            }
+            else
+            {
+                cout << "----------------------\n";
+                cout << "\t\033[1;31mReceipt\033[0m\n";
+                cout << "----------------------\n";
+                cout << "Transfer to: " << to << "    " << amount << endl;
+            }
+    }
+
     Bank(usstype username, pintype pin, baltype balance)
     {
         this->username = username;
@@ -226,6 +257,7 @@ void MenuBank(string username, string pin, double balance)
             {
                 user->deposit(amount);
                 user->updateTransaction(amount, "Deposit");
+                user->showReceipt("Deposit", amount);
                 MenuBank(user->getUsername(), user->getPin(), user->getBalance());
                 break;
             }
@@ -329,6 +361,7 @@ void MenuBank(string username, string pin, double balance)
             {
                 user->withdraw(amount);
                 user->updateTransaction(amount, "Withdraw");
+                user->showReceipt("Withdraw", amount);
                 MenuBank(user->getUsername(), user->getPin(), user->getBalance());
                 break;
             }
@@ -514,6 +547,7 @@ void MenuBank(string username, string pin, double balance)
             {
                 user->transfer(transfername, amount);
                 user->updateTransaction(amount, transfername);
+                user->showReceipt(transfername, amount);
                 MenuBank(user->getUsername(), user->getPin(), user->getBalance());
 
                 break;
