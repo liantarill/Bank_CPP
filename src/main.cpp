@@ -62,6 +62,27 @@ public:
     }
 };
 
+    void transfer(string user, double amount)
+    {
+        ifstream balances;
+        double nowbalance;
+        balances.open("Data/Balance/" + user + ".txt");
+        balances >> nowbalance;
+        balances.close();
+
+        nowbalance += amount;
+        updateBalance(user, nowbalance);
+
+        balances.open("Data/Balance/" + this->getUsername() + ".txt");
+        balances >> nowbalance;
+        balances.close();
+        this->balance -= amount;
+        updateBalance(this->username, this->balance);
+        system("cls");
+        cout << "Transfer Successed" << endl;
+        MenuBank(this->username, this->pin, this->balance);
+    }
+
 void MenuBank(string username, string pin, double balance)
 {
     Bank<string, string, double> *user = new Bank<string, string, double>(username, pin, balance);
@@ -71,6 +92,11 @@ void MenuBank(string username, string pin, double balance)
 
     double amount;
     string inputPin;
+    bool exist;
+    string transfername;
+    vector<string> usernames;
+    ifstream balFile;
+    string users;
     cout << "Hello " << user->getUsername() << "!!!" << endl
          << endl;
     cout << "Your balance is : " << user->getBalance() << endl;
