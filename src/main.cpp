@@ -33,7 +33,6 @@ public:
 
         system("cls");
         cout << "Deposit successful" << endl;
-        MenuBank(this->username, this->pin, this->balance);
     }
 
     void withdraw(baltype amount)
@@ -42,7 +41,6 @@ public:
         updateBalance(this->username, this->balance);
         system("cls");
         cout << "Withdraw successful" << endl;
-        MenuBank(this->username, this->pin, this->balance);
     }
 
     void updateBalance(string username, double balance)
@@ -60,7 +58,6 @@ public:
         pinFile << this->pin << endl;
         pinFile.close();
     }
-};
 
     void transfer(string user, double amount)
     {
@@ -80,8 +77,68 @@ public:
         updateBalance(this->username, this->balance);
         system("cls");
         cout << "Transfer Successed" << endl;
-        MenuBank(this->username, this->pin, this->balance);
     }
+
+    void updateTransaction(double amount, string to)
+    {
+        ofstream transFile;
+        transFile.open("Data/Transaction/" + this->username + ".txt", ios::app);
+        if (to == "Deposit")
+        {
+            transFile << to << "          +" << amount << endl;
+            transFile.close();
+        }
+        else if (to == "Withdraw")
+        {
+            transFile << to << "         -" << amount << endl;
+            transFile.close();
+        }
+        else
+        {
+            transFile << "Transfer to " << to << "      -" << amount << endl;
+            transFile.close();
+
+            transFile.open("Data/Transaction/" + to + ".txt", ios::app);
+            transFile << "Transfer from " << this->username << "      +" << amount << endl;
+            transFile.close();
+        }
+    }
+
+    void displayTransaction()
+    {
+        system("cls");
+        ifstream transFile;
+        vector<string> list;
+        string history;
+
+        transFile.open("Data/Transaction/" + this->username + ".txt");
+        while (getline(transFile, history))
+        {
+            list.push_back(history);
+        }
+
+        transFile.close();
+
+        for (auto it = list.begin(); it != list.end(); it++)
+        {
+            cout << *it << endl;
+        }
+        char choice;
+
+        cout << "Do you want to exit ?" << endl;
+
+        cin >> choice;
+        if (choice == 'Y' || choice == 'y')
+        {
+            system("cls");
+            MenuBank(this->username, this->pin, this->balance);
+        }
+        else
+        {
+            displayTransaction();
+        }
+    }
+};
 
 void MenuBank(string username, string pin, double balance)
 {
@@ -103,7 +160,9 @@ void MenuBank(string username, string pin, double balance)
     cout << "what do you want to do?" << endl;
     cout << "1. Deposit" << endl;
     cout << "2. Withdraw" << endl;
-    cout << "3. Quit" << endl;
+    cout << "3. Transfer" << endl;
+    cout << "4. Transaction History" << endl;
+    cout << "5. Quit" << endl;
     cout << "Enter your choice : ";
     cin >> choice;
 
@@ -160,6 +219,8 @@ void MenuBank(string username, string pin, double balance)
             if (inputPin == pin)
             {
                 user->deposit(amount);
+                user->updateTransaction(amount, "Deposit");
+                MenuBank(user->getUsername(), user->getPin(), user->getBalance());
                 break;
             }
             else
@@ -261,6 +322,8 @@ void MenuBank(string username, string pin, double balance)
             if (inputPin == pin)
             {
                 user->withdraw(amount);
+                user->updateTransaction(amount, "Withdraw");
+                MenuBank(user->getUsername(), user->getPin(), user->getBalance());
                 break;
             }
             else
@@ -292,7 +355,7 @@ void MenuBank(string username, string pin, double balance)
             if (transfername != user->getUsername())
             {
                 // mengubah listuser menjadi vector
-                balFile.open("Data/ListUser.txt");
+                balFile.open("Data/ListUsers.txt");
                 while (balFile >> users)
                 {
                     usernames.push_back(users);
@@ -444,6 +507,9 @@ void MenuBank(string username, string pin, double balance)
             if (inputPin == pin)
             {
                 user->transfer(transfername, amount);
+                user->updateTransaction(amount, transfername);
+                MenuBank(user->getUsername(), user->getPin(), user->getBalance());
+
                 break;
             }
             else
@@ -463,8 +529,14 @@ void MenuBank(string username, string pin, double balance)
                 cout << endl
                      << "Please check again your PIN" << endl;
                 inpin++;
-            }
-        }
+            }
+        }
+        break;
+
+    case 4:
+        user->displayTransaction();
+        break;
+    case 5:
         Quit();
         exit(0);
         break;

@@ -1,0 +1,5 @@
+Deposit          +10000
+Deposit          +2000
+Transfer to nando      -3000
+Transfer to nando      -3000
+Transfer to irpan      -1000

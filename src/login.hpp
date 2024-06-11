@@ -128,6 +128,10 @@ void Registration()
         ch = _getch();
     }
 
+    myFile.open("Data/ListUsers.txt", ios::app);
+    myFile << userReg << endl;
+    myFile.close();
+
     myFile.open("Data/UserAccount.txt", ios::app);
     myFile << userReg << " " << passReg << endl;
     myFile.close();
