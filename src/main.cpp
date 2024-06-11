@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <stack>
 #include <conio.h>
 #include "login.hpp"
 using namespace std;
@@ -108,24 +109,28 @@ public:
     {
         system("cls");
         ifstream transFile;
-        vector<string> list;
+        stack<string> list;
         string history;
 
         transFile.open("Data/Transaction/" + this->username + ".txt");
         while (getline(transFile, history))
         {
-            list.push_back(history);
+            list.push(history);
         }
 
         transFile.close();
-
-        for (auto it = list.begin(); it != list.end(); it++)
+        if (list.empty())
         {
-            cout << *it << endl;
+            cout << "You have't made a transaction yet" << endl;
+        }
+        while (!list.empty())
+        {
+            cout << list.top() << endl;
+            list.pop();
         }
         char choice;
-
-        cout << "Do you want to exit ?" << endl;
+        cout << "_____________________" << endl;
+        cout << "Do you want to exit ?(Y/N): ";
 
         cin >> choice;
         if (choice == 'Y' || choice == 'y')
