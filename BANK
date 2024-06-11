@@ -1,3 +1,13 @@
+Kelas C
+
+Kelompok 7:
+Fernando Ramadhan
+Irpan Purnama Agung
+Yusuf Herlian Ananta Ril
+
+
+
+
 1. Create account & Login
    -> Username(string)
    -> Password(string)
@@ -14,4 +24,14 @@
    -> Harus input pin
    -> Jika pin salah 3x terblokir
 
-4.
+4. Transfer
+   -> Tidak boleh minus
+   -> Tidak boleh melebihi saldo
+   -> Harus input pin
+   -> Jika pin salah 3x terblokir
+   -> Tidak bisa transfer ke akun sendiri
+
+5. Transaction History
+   -> Melihat history dari yang terbaru
+
+
