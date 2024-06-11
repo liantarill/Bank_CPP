@@ -509,7 +509,7 @@ void MenuBank(string username, string pin, double balance)
         while (true)
         {
             cout << "Enter your PIN : ";
-            cin >> inputPin;
+            inputPin = getMaskedInput();
             if (inputPin == pin)
             {
                 user->transfer(transfername, amount);
