@@ -3,6 +3,7 @@
 #include <vector>
 #include <stack>
 #include <conio.h>
+#include <iomanip>
 #include "login.hpp"
 using namespace std;
 
@@ -161,7 +162,7 @@ void MenuBank(string username, string pin, double balance)
     string users;
     cout << "Hello " << user->getUsername() << "!!!" << endl
          << endl;
-    cout << "Your balance is : " << user->getBalance() << endl;
+    cout << "Your balance is : " << fixed << setprecision(0) << user->getBalance() << endl;
     cout << "what do you want to do?" << endl;
     cout << "1. Deposit" << endl;
     cout << "2. Withdraw" << endl;
