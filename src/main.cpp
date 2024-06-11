@@ -16,35 +16,48 @@ private:
     baltype balance;
 
 public:
-     void showReceipt(string to, double amount)
+    void showReceipt(string to, double amount)
+    {
+        system("cls");
+        cout << "|----------------------|" << endl;
+        cout << "|Transaction Successful|" << endl;
+        cout << "|----------------------|" << endl;
+        cout << endl;
+
+        if (to == "Deposit")
+        {
+            cout << "----------------------\n";
+            cout << "\t\033[1;31mReceipt\033[0m\n";
+            cout << "----------------------\n";
+            cout << "Deposit:     " << amount << endl;
+        }
+        else if (to == "Withdraw")
+        {
+            cout << "----------------------\n";
+            cout << "\t\033[1;31mReceipt\033[0m\n";
+            cout << "----------------------\n";
+            cout << "Withdraw:    " << amount << endl;
+        }
+        else
+        {
+            cout << "----------------------\n";
+            cout << "\t\033[1;31mReceipt\033[0m\n";
+            cout << "----------------------\n";
+            cout << "Transfer to: " << to << "    " << amount << endl;
+        }
+
+        string choice;
+
+        cout << "\n\n\nExit? (Y/N) : ";
+        cin >> choice;
+        if (choice == "Y" || choice == "y")
         {
             system("cls");
-            cout << "|----------------------|" << endl;
-            cout << "|Transaction Successful|" << endl;
-            cout << "|----------------------|" << endl;
-            cout << endl;
-
-            if (to == "Deposit")
-            {
-                cout << "----------------------\n";
-                cout << "\t\033[1;31mReceipt\033[0m\n";
-                cout << "----------------------\n";
-                cout << "Deposit:     " << amount << endl;
-            }
-            else if (to == "Withdraw")
-            {
-                cout << "----------------------\n";
-                cout << "\t\033[1;31mReceipt\033[0m\n";
-                cout << "----------------------\n";
-                cout << "Withdraw:    " << amount << endl;
-            }
-            else
-            {
-                cout << "----------------------\n";
-                cout << "\t\033[1;31mReceipt\033[0m\n";
-                cout << "----------------------\n";
-                cout << "Transfer to: " << to << "    " << amount << endl;
-            }
+        }
+        else
+        {
+            showReceipt(to, amount);
+        }
     }
 
     Bank(usstype username, pintype pin, baltype balance)
