@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <iomanip>
 #include <conio.h>
 using namespace std;
 
@@ -74,7 +75,7 @@ void printAccounts(const vector<Account> &accounts)
 {
     for (const auto &account : accounts)
     {
-        cout << "Username: " << account.name << ", Balance: " << account.balance << endl;
+        cout << "Username: " << account.name << ", Balance: " << fixed << setprecision(0) << account.balance << endl;
     }
 }
 
@@ -172,7 +173,7 @@ void searchUser(string search)
             while (true)
             {
                 system("cls");
-                cout << "Balance : " << balance << endl;
+                cout << "Balance : " << fixed << setprecision(0) << balance << endl;
                 cout << "Exit ? (Y/N) : ";
                 cin >> ext;
                 if (ext == 'Y' || ext == 'y')
