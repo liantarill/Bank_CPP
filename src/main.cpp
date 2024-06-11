@@ -597,7 +597,6 @@ public:
             break;
         }
     }
-};
 
 int main()
 {
